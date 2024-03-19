@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import SlideButtonThumb, { SlideButtonThumbProps } from './SlideButtonThumb';
 import SlideButtonText, { SlideButtonTextProps } from './SlideButtonText';
+import SlideButtonUnderlayText, { SlideButtonUnderlayTextProps } from './SlideButtonUnderlayText';
 import Animated, {
   runOnJS,
   useAnimatedGestureHandler,
@@ -45,6 +46,10 @@ export type SlideButtonPropsExtends = Omit<
   > &
   Omit<
     SlideButtonTextProps,
+    'translateX' | 'scrollDistance' | 'endReached' | 'isRTL'
+  > & 
+  Omit<
+    SlideButtonUnderlayTextProps,
     'translateX' | 'scrollDistance' | 'endReached' | 'isRTL'
   >;
 
@@ -91,6 +96,9 @@ const SlideButton = ({
   title,
   titleContainerStyle,
   titleStyle,
+  underlayTitle,
+  underlayTitleContainerStyle,
+  underlayTitleStyle,
   icon,
   thumbStyle,
   containerStyle,
@@ -311,8 +319,21 @@ const SlideButton = ({
           underlayStyle,
           underlayAnimStyle,
           underlayDynamicStyle,
-        ]}
-      />
+          
+        ]}>
+
+        <SlideButtonUnderlayText
+          underlayTitle={underlayTitle}
+          underlayTitleStyle={underlayTitleStyle}
+          underlayTitleContainerStyle={underlayTitleContainerStyle}
+          height={childHeight}
+          padding={padding}
+          borderRadius={radius}
+          translateX={dragX}
+          scrollDistance={scrollDistance}
+        />
+
+        </Animated.View>
 
       <SlideButtonThumb
         gestureHandler={animatedGestureHandler}
@@ -375,14 +396,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     height: DEFAULT_HEIGHT,
     borderRadius: DEFAULT_BORDER_RADIUS,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 1.41,
+    // elevation: 2,
   },
   underlayContainer: {
     position: 'absolute',
